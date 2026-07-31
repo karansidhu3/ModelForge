@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+
+# Tooling caches
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Experiment records — regenerable run artifacts, not source.
+# See docs/experiment-tracking.md.
+experiments/runs/
+
+# OS
+.DS_Store
