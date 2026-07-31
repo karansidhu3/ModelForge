@@ -146,6 +146,61 @@ That's deferred to whenever the CLI is actually implemented, at which point
 the registry design can be made with a real caller driving the requirements,
 rather than guessed at now. Revisit this decision at that point.
 
+**Update (Phase 4):** `cli/main.py` now exists, but only for reporting
+(`modelforge experiments list`, reading already-recorded run files) — it
+never runs a model, so it still doesn't need to resolve a name to a `Factor`
+class. The registry question above remains open, deferred until a `run`
+command is actually built.
+
+---
+
+### DD-009: Experiment records store a compact output summary, not the full
+result series
+
+**Decision:** `ExperimentRecord.output_summary` holds a handful of scalars
+(observation count, valid-value count, first/last valid index and value) —
+not the `Factor`'s full output series.
+
+**Why:** `docs/experiment-tracking.md` asks for records that are "trivial to
+load into a Pandas DataFrame for comparison" and human-diffable. A full
+series nested inside every run's JSON file works against both: it makes each
+file's size proportional to the dataset rather than roughly constant, and a
+column of nested per-run series doesn't flatten into a comparison table the
+way scalar summary stats do. Full-fidelity reproduction of a result doesn't
+require persisting it either — `docs/reproducibility.md`'s own definition of
+reproducibility is "config plus commit hash, re-run it," not "read the
+output back from a log."
+
+**Trade-off accepted:** Inspecting a past run's output in full means
+re-running it (cheap, for the model sizes this project deals with — see
+`research/moving_average/README.md`'s performance numbers), not just reading
+the record. If a future need genuinely requires full-fidelity output
+persistence, that's a real design conversation to have then, not something
+to build speculatively now.
+
+---
+
+### DD-010: Commit-hash capture fails soft, not loudly
+
+**Decision:** `experiments/tracker.py`'s `_current_commit` returns
+`(None, None)` when the code isn't running inside a git repository (or `git`
+isn't available), rather than raising and aborting the run.
+
+**Why:** This breaks from this project's general "fail loudly" posture on
+purpose. Commit provenance is auxiliary metadata *about* a run, not part of
+its numerical result — a missing commit hash doesn't make a run's output
+wrong, it just weakens how precisely a future reader can pin down what code
+produced it. `docs/reproducibility.md` already has precedent for stating a
+limitation honestly rather than pretending it doesn't exist (the Yahoo
+Finance non-reproducibility note) or, worse, blocking otherwise-valid work
+over it. A source tree extracted from an archive, with no `.git` directory,
+should still be able to run the pipeline and get a validated result — it
+just won't get a commit hash attached to the experiment record.
+
+**Trade-off accepted:** A run recorded outside a git checkout has strictly
+weaker reproducibility provenance (config only, no commit pin). This is
+recorded honestly (`commit_hash: null` in the JSON) rather than hidden.
+
 ---
 
 *(Add new entries below this line as decisions are made in later phases.)*

@@ -64,10 +64,12 @@ modelforge/
 
 ## Status
 
-This repository has completed **Phase 3 — First Real Model**: the core
-execution engine (config, the `Factor` interface, CSV loading, validation,
-the pipeline) is implemented, and the first real model — a simple moving
-average — is implemented, validated, tested, and documented end to end. See
+This repository has completed **Phase 4 — Experiment Runner, Benchmarking,
+Reporting**: the core execution engine, the first real model (simple moving
+average), and local experiment tracking are all implemented. Every pipeline
+run is now recorded as a JSON file under `experiments/runs/` (git-ignored —
+regenerable, not source), including the commit hash it ran at, and
+`modelforge experiments list` summarizes what's been tracked. See
 [`ROADMAP.md`](./ROADMAP.md) for what comes next.
 
 ## Requirements
@@ -81,7 +83,10 @@ average — is implemented, validated, tested, and documented end to end. See
 pip install -e ".[dev]"
 pytest
 python examples/moving_average.py
+modelforge experiments list
 ```
 
 The example script loads a small synthetic price series, runs the moving
-average factor through the pipeline, and prints the validated result.
+average factor through the pipeline, prints the validated result, and
+records it as a tracked experiment. `modelforge experiments list` then
+summarizes every run recorded so far.

@@ -59,9 +59,9 @@ def main() -> None:
     print(result.factor_result.series.to_string())
     print()
     print(
-        "Note: experiment recording is a no-op stub in this phase (see "
-        "docs/experiment-tracking.md and ROADMAP.md Phase 4). This script "
-        "demonstrates the model running end-to-end through the pipeline."
+        f"Recorded as experiment {result.experiment.run_id} under "
+        f"experiments/runs/ (see docs/experiment-tracking.md). Run "
+        f"`modelforge experiments list` to see every tracked run so far."
     )
 
 

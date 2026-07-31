@@ -56,17 +56,25 @@ the model end-to-end through `run_pipeline`; "tracked" is still the Phase 2
 no-op stub, same caveat as Phase 2's exit criterion — real recording is
 Phase 4 scope).
 
-## Phase 4 — Experiment Runner, Benchmarking, Reporting (not started)
+## Phase 4 — Experiment Runner, Benchmarking, Reporting (complete)
 
-- [ ] `experiments/tracker.py` — local run recording per
+- [x] `experiments/tracker.py` — local run recording per
       `docs/experiment-tracking.md`
-- [ ] Benchmarking harness (runtime characteristics per model, recorded not
+- [x] Benchmarking harness (runtime characteristics per model, recorded not
       guessed)
-- [ ] Basic reporting: summarize tracked experiments (e.g. table of runs, params,
+- [x] Basic reporting: summarize tracked experiments (e.g. table of runs, params,
       runtime) via the CLI
 
 Exit criterion: running the same model twice with different parameters produces
-two comparable, inspectable tracked experiments.
+two comparable, inspectable tracked experiments. Met — see
+`tests/core/test_pipeline.py::test_two_runs_with_different_params_produce_comparable_tracked_experiments`
+and `examples/moving_average.py`, which now produces a real record under
+`experiments/runs/` when run. `core/pipeline.py`'s experiment-recording stage
+is no longer a stub — it calls `experiments/tracker.py` for real, including a
+commit hash (now that real git history exists, per
+`docs/experiment-tracking.md`'s "Commit hash: planned" note). `modelforge
+experiments list` reports on what's been recorded; there is still no `modelforge
+run` command — see the Phase 4 update to DD-008 in `DESIGN_DECISIONS.md`.
 
 ## Phase 5 — Additional Models, Refactoring, Documentation (not started)
 
