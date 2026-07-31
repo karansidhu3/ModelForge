@@ -57,28 +57,31 @@ modelforge/
 └── src/modelforge/         The framework itself
     ├── core/                Factor interface, config, pipeline, validation
     ├── data/                Local/free data loaders (CSV, Yahoo Finance, FRED)
+    ├── models/              Concrete Factor implementations (moving average, ...)
     ├── experiments/         Lightweight local experiment tracking
     └── cli/                 Typer-based command-line entrypoint
 ```
 
 ## Status
 
-This repository is currently at the end of **Phase 1 — Repository Design**: the
-architecture, interfaces, and documentation are in place, but no models or
-execution logic have been implemented yet. See [`ROADMAP.md`](./ROADMAP.md) for
-what comes next.
+This repository has completed **Phase 3 — First Real Model**: the core
+execution engine (config, the `Factor` interface, CSV loading, validation,
+the pipeline) is implemented, and the first real model — a simple moving
+average — is implemented, validated, tested, and documented end to end. See
+[`ROADMAP.md`](./ROADMAP.md) for what comes next.
 
 ## Requirements
 
 - Python 3.11+
 - No paid APIs, no cloud services, no GPU. Everything here runs on a laptop.
 
-## Quickstart (once Phase 2 lands)
+## Quickstart
 
 ```bash
 pip install -e ".[dev]"
 pytest
+python examples/moving_average.py
 ```
 
-There's nothing to run yet beyond this — see the roadmap for what "quickstart"
-will mean once the execution engine exists.
+The example script loads a small synthetic price series, runs the moving
+average factor through the pipeline, and prints the validated result.

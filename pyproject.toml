@@ -59,4 +59,8 @@ warn_return_any = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
-pythonpath = ["."]
+# "src" lets the suite run against the working tree directly (via pytest's own
+# sys.path insertion) without depending on an editable install being wired up
+# correctly; "." makes `tests` importable as a package for cross-module
+# imports like `from tests.conftest import ...`.
+pythonpath = ["src", "."]

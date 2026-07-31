@@ -40,16 +40,21 @@ see `tests/core/test_pipeline.py`. "Tracked" is currently a no-op stub;
 dispatch is direct injection rather than a name-based registry — see DD-008
 in `DESIGN_DECISIONS.md`.
 
-## Phase 3 — First Real Model (not started)
+## Phase 3 — First Real Model (complete)
 
-- [ ] `research/moving_average/README.md` — plain-English explanation and math
-- [ ] Moving Average `Factor` implementation
-- [ ] Known-input/known-output tests, edge cases (insufficient window, NaNs)
-- [ ] Assumptions documented
-- [ ] One tracked experiment run
+- [x] `research/moving_average/README.md` — plain-English explanation and math
+- [x] Moving Average `Factor` implementation
+- [x] Known-input/known-output tests, edge cases (insufficient window, NaNs)
+- [x] Assumptions documented
+- [x] One tracked experiment run
 
 Exit criterion: the first model is implemented, validated, tested, and
 documented end to end — establishing the template every later model follows.
+Met — see `src/modelforge/models/moving_average.py`,
+`tests/models/test_moving_average.py`, and `examples/moving_average.py` (runs
+the model end-to-end through `run_pipeline`; "tracked" is still the Phase 2
+no-op stub, same caveat as Phase 2's exit criterion — real recording is
+Phase 4 scope).
 
 ## Phase 4 — Experiment Runner, Benchmarking, Reporting (not started)
 
