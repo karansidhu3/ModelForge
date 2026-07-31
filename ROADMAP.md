@@ -76,18 +76,33 @@ commit hash (now that real git history exists, per
 experiments list` reports on what's been recorded; there is still no `modelforge
 run` command — see the Phase 4 update to DD-008 in `DESIGN_DECISIONS.md`.
 
-## Phase 5 — Additional Models, Refactoring, Documentation (not started)
+## Phase 5 — Additional Models, Refactoring, Documentation (complete)
 
-- [ ] Momentum
-- [ ] Volatility
-- [ ] Z-Score
-- [ ] Mean Reversion
-- [ ] Revisit `core/` for any generalization the additional models revealed was
+- [x] Momentum
+- [x] Volatility
+- [x] Z-Score
+- [x] Mean Reversion
+- [x] Revisit `core/` for any generalization the additional models revealed was
       missing (logged in `DESIGN_DECISIONS.md`, not made silently)
-- [ ] Documentation pass across the whole repository
+- [x] Documentation pass across the whole repository
 
 Exit criterion: five models, one shared framework, no model-specific logic
-leaked into `core/`.
+leaked into `core/`. Met — see `src/modelforge/models/`,
+`research/<model>/README.md` for each, and `examples/<model>.py` for each.
+**No `core/` changes were needed** to support the four new models: `FactorResult.intermediates`
+(already part of the Phase 2 design) was sufficient for volatility, z-score,
+and mean reversion to expose their intermediate calculations; the flat
+`Factor` Protocol needed no new attributes; `core/validation.py`'s
+same-index-only NaN heuristic surfaced a real, already-documented limitation
+on momentum (a benign warning, not a failure — see
+`research/momentum/README.md`) rather than requiring a change. Since there
+was no generalization to make, there's nothing new to log in
+`DESIGN_DECISIONS.md` beyond DD-001's existing rationale for why models don't
+depend on each other (momentum, volatility, z-score, and mean reversion each
+compute their own rolling statistics rather than sharing a helper or calling
+into `moving_average.py`, even where the math overlaps).
+`research/README.md`, `tests/README.md`, and `examples/README.md` — all
+stale since Phase 1 — were updated to reflect the current repository state.
 
 ## Explicitly out of scope, always
 

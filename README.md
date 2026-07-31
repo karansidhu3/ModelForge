@@ -52,25 +52,27 @@ modelforge/
 ├── requirements-dev.txt
 ├── docs/                   Deep-dive documentation (validation, tracking, etc.)
 ├── research/               One folder per model: paper notes, math, assumptions
-├── examples/               Runnable end-to-end examples once models exist
+├── examples/               Runnable end-to-end examples, one per model
 ├── tests/                  Test suite, mirrors src/modelforge/
 └── src/modelforge/         The framework itself
     ├── core/                Factor interface, config, pipeline, validation
     ├── data/                Local/free data loaders (CSV, Yahoo Finance, FRED)
-    ├── models/              Concrete Factor implementations (moving average, ...)
-    ├── experiments/         Lightweight local experiment tracking
+    ├── models/              Concrete Factor implementations (five: moving
+    │                        average, momentum, volatility, z-score, mean
+    │                        reversion)
+    ├── experiments/         Local experiment tracking + benchmarking harness
     └── cli/                 Typer-based command-line entrypoint
 ```
 
 ## Status
 
-This repository has completed **Phase 4 — Experiment Runner, Benchmarking,
-Reporting**: the core execution engine, the first real model (simple moving
-average), and local experiment tracking are all implemented. Every pipeline
-run is now recorded as a JSON file under `experiments/runs/` (git-ignored —
-regenerable, not source), including the commit hash it ran at, and
-`modelforge experiments list` summarizes what's been tracked. See
-[`ROADMAP.md`](./ROADMAP.md) for what comes next.
+This repository has completed **Phase 5 — Additional Models, Refactoring,
+Documentation**, the last phase on the roadmap: all five planned models
+(moving average, momentum, volatility, z-score, mean reversion) are
+implemented, validated, tested, benchmarked, and documented, each through
+the same core execution engine with no model-specific logic in `core/`. See
+[`ROADMAP.md`](./ROADMAP.md) for the phase-by-phase history and what
+"done" means at each stage.
 
 ## Requirements
 
@@ -86,7 +88,9 @@ python examples/moving_average.py
 modelforge experiments list
 ```
 
-The example script loads a small synthetic price series, runs the moving
-average factor through the pipeline, prints the validated result, and
-records it as a tracked experiment. `modelforge experiments list` then
+Every model in `src/modelforge/models/` has a runnable example in
+`examples/` (`moving_average.py`, `momentum.py`, `volatility.py`,
+`z_score.py`, `mean_reversion.py`) — each loads a small synthetic price
+series, runs that model through the pipeline, prints the validated result,
+and records it as a tracked experiment. `modelforge experiments list`
 summarizes every run recorded so far.
